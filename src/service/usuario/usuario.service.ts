@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { User } from 'src/entities/user.entity';
-import { error } from 'console';
 import { UserDto } from 'src/DTOs/user.dto';
 
 @Injectable()
@@ -14,10 +13,10 @@ export class UsuarioService {
     }
 
     async getById(id: number): Promise<User> {
-        let user = await this.service.usuario.findUnique({ where: { id: Number(id) } })
+        let user = await this.service.usuario.findUnique({ where: { id: id } })
 
         if (!user)
-            throw new error("Id não encontrado")
+            throw new NotFoundException("Id não encontrado")
 
         return user
     }
@@ -37,28 +36,26 @@ export class UsuarioService {
     }
 
     async update(id: number, data: UserDto): Promise<User> {
-        let user = this.service.usuario.findUnique({ where: { id: id } })
+        let user = await this.service.usuario.findUnique({ where: { id: id } })
 
         if (!user)
-            throw new error("Usuario não encontrado")
+            throw new NotFoundException("Usuario não encontrado")
 
-        const updateUser = await this.service.usuario.update({
-            where: { id: Number(id) },
+        return await this.service.usuario.update({
+            where: { id: id },
             data: {
                 nome: data.nome,
                 email: data.email
             }
         })
-
-        return updateUser
     }
 
     async Delete(id: number): Promise<User> {
-        let data = this.service.usuario.findUnique({ where: { id: id } })
+        let data = await this.service.usuario.findUnique({ where: { id: id } })
 
         if (!data)
             throw new NotFoundException("Id não encontrado")
 
-        return await this.service.usuario.delete({ where: { id: Number(id) } })
+        return await this.service.usuario.delete({ where: { id: id } })
     }
 }
