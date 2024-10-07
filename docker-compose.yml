@@ -1,0 +1,12 @@
+services:
+  backend:
+    build:
+      context: C:/temp/crud-com-prisma  # Diretório do seu backend
+    ports:
+      - "4000:3000"  # Mapeia a porta 3000 do contêiner para a porta 4000 da máquina local
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
