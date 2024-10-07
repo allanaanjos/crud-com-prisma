@@ -9,7 +9,7 @@ export class UsuarioController {
     constructor(private userService: UsuarioService) { }
 
     @Get()
-    async getAll(): Promise<User[]> {
+    async getAll(): Promise<UserDto[]> {
         return await this.userService.getAll();
     }
 
@@ -26,7 +26,7 @@ export class UsuarioController {
         if (!data || Object.keys(data).length === 0)
             throw new BadRequestException("Dados de usuário inválidos")
 
-        return await this.userService.Post(data);
+        return await this.userService.create(data);
     }
 
     @Put('atualizar/:id')
@@ -38,10 +38,10 @@ export class UsuarioController {
     }
 
     @Delete('remover/:id')
-    async remover(@Param('id', ParseIntPipe)id: number): Promise<User>{
+    async remover(@Param('id', ParseIntPipe)id: number): Promise<UserDto>{
         if(id <= 0)
             throw new BadRequestException("Id invalído")
 
-        return await this.userService.Delete(id)
+        return await this.userService.delete(id)
     }
 }

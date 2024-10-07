@@ -72,7 +72,7 @@ describe('UsuarioService', () => {
 
             jest.spyOn(prismaService.usuario, 'create').mockResolvedValue(mockUser);
 
-            const result = await userService.Post(mockUser);
+            const result = await userService.create(mockUser);
 
             expect(result).toEqual(mockUser);
         });
@@ -80,7 +80,7 @@ describe('UsuarioService', () => {
         it('Se usuário for inválido, retornar BadRequestException', async () => {
             const invalidUser = { nome: '', email: '' };
 
-            await expect(userService.Post(invalidUser)).rejects.toThrow(BadRequestException);
+            await expect(userService.create(invalidUser)).rejects.toThrow(BadRequestException);
         });
     });
 
@@ -113,7 +113,7 @@ describe('UsuarioService', () => {
             jest.spyOn(prismaService.usuario, 'findUnique').mockResolvedValue(mockUser);
             jest.spyOn(prismaService.usuario, 'delete').mockResolvedValue(mockUser);
 
-            const result = await userService.Delete(1);
+            const result = await userService.delete(1);
 
             expect(result).toEqual(mockUser);
         });
@@ -121,7 +121,7 @@ describe('UsuarioService', () => {
         it('Retornar NotFoundException caso usuário não exista', async () => {
             jest.spyOn(prismaService.usuario, 'findUnique').mockResolvedValue(null);
 
-            await expect(userService.Delete(1)).rejects.toThrow(NotFoundException);
+            await expect(userService.delete(1)).rejects.toThrow(NotFoundException);
         });
     });
 });

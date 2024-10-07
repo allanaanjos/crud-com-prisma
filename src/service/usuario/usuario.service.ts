@@ -8,7 +8,7 @@ export class UsuarioService {
 
     constructor(private service: PrismaService) { }
 
-    async getAll(): Promise<User[]> {
+    async getAll(): Promise<UserDto[]> {
         return await this.service.usuario.findMany();
     }
 
@@ -18,10 +18,10 @@ export class UsuarioService {
         if (!user)
             throw new NotFoundException("Id não encontrado")
 
-        return user
+        return user;
     }
 
-    async Post(data: UserDto): Promise<User> {
+    async create(data: UserDto): Promise<User> {
         if (data === null || !data.nome || !data.email) {
             throw new BadRequestException("Usuário inválido");
         }
@@ -50,7 +50,7 @@ export class UsuarioService {
         })
     }
 
-    async Delete(id: number): Promise<User> {
+    async delete(id: number): Promise<UserDto> {
         let data = await this.service.usuario.findUnique({ where: { id: id } })
 
         if (!data)
